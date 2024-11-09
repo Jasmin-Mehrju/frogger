@@ -84,8 +84,8 @@ class Game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.KEYDOWN:          # Taste drücken §\label{srcTastatur0003}§
-                if event.key == pygame.K_ESCAPE:        # Boss-Taste §\label{srcTastatur0004}§
+            elif event.type == pygame.KEYDOWN:          
+                if event.key == pygame.K_ESCAPE:  
                     self.running = False
 
                 elif event.key == pygame.K_LEFT:
