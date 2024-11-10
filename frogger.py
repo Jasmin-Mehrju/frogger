@@ -60,10 +60,10 @@ class Obstacle(pygame.sprite.Sprite):
 
     def update(self):
         self.rect = self.rect.move(self.speedx, self.speedy)
-        # if self.rect.left < 0 or self.rect.right > Settings.WINDOW.width:
-        #     self.speedx *= -1
-        # if self.rect.top < 0 or self.rect.bottom > Settings.WINDOW.height:
-        #     self.speedy *= -1
+        if self.rect.right < 0:
+            self.rect.left = Settings.WINDOW.width
+        elif self.rect.left > Settings.WINDOW.width:
+            self.rect.right = 0
 
 
 
@@ -83,10 +83,10 @@ class Game():
         self.car1 = Obstacle("car1.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 150), speedx=3, speedy=0)
         self.obstacles.add(self.car1)
 
-        self.car2 = Obstacle("car2.png", (100, 60), (Settings.WINDOW.width - 650, Settings.WINDOW.height - 150), speedx=3, speedy=0)
+        self.car2 = Obstacle("car2.png", (100, 60), (Settings.WINDOW.width - 680, Settings.WINDOW.height - 150), speedx=3, speedy=0)
         self.obstacles.add(self.car2)
 
-        self.car3 = Obstacle("car3.png", (100, 60), (Settings.WINDOW.width - 850, Settings.WINDOW.height - 150), speedx=3, speedy=0)
+        self.car3 = Obstacle("car3.png", (100, 60), (Settings.WINDOW.width - 880, Settings.WINDOW.height - 150), speedx=3, speedy=0)
         self.obstacles.add(self.car3)
 
         self.car1L = Obstacle("car1L.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 200), speedx=-3, speedy=0)
