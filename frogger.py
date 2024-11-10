@@ -48,6 +48,24 @@ class Frog(Object):
                 self.rect.topleft = self.pos
         self.setImage()
 
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self, image_file, size, pos, speedx, speedy):
+        super().__init__()
+        self.image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, image_file)).convert_alpha()
+        self.image = pygame.transform.scale(self.image, size)
+        self.rect: pygame.rect.Rect = self.image.get_rect()
+        self.rect.topleft = pos
+        self.speedx = speedx
+        self.speedy = speedy
+
+    def update(self):
+        self.rect = self.rect.move(self.speedx, self.speedy)
+        # if self.rect.left < 0 or self.rect.right > Settings.WINDOW.width:
+        #     self.speedx *= -1
+        # if self.rect.top < 0 or self.rect.bottom > Settings.WINDOW.height:
+        #     self.speedy *= -1
+
+
 
 class Game():
     def __init__(self):
@@ -60,6 +78,26 @@ class Game():
 
         self.frog = Frog("frog_up.png", (40, 40), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 40))
         self.all_sprites = pygame.sprite.Group(self.frog)
+
+        self.obstacles = pygame.sprite.Group()
+        self.car1 = Obstacle("car1.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 150), speedx=3, speedy=0)
+        self.obstacles.add(self.car1)
+
+        self.car2 = Obstacle("car2.png", (100, 60), (Settings.WINDOW.width - 650, Settings.WINDOW.height - 150), speedx=3, speedy=0)
+        self.obstacles.add(self.car2)
+
+        self.car3 = Obstacle("car3.png", (100, 60), (Settings.WINDOW.width - 850, Settings.WINDOW.height - 150), speedx=3, speedy=0)
+        self.obstacles.add(self.car3)
+
+        self.car1L = Obstacle("car1L.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 200), speedx=-3, speedy=0)
+        self.obstacles.add(self.car1L)
+
+        self.car2L = Obstacle("car2L.png", (100, 60), (Settings.WINDOW.width - 800, Settings.WINDOW.height - 200), speedx=-3, speedy=0)
+        self.obstacles.add(self.car2L)
+
+        self.car3L = Obstacle("car3L.png", (100, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 200), speedx=-3, speedy=0)
+        self.obstacles.add(self.car3L)
+        
 
         self.background_image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, "bg.png")).convert()
         self.background_image = pygame.transform.scale(self.background_image, Settings.WINDOW.size)
@@ -78,6 +116,7 @@ class Game():
     def draw(self):
         self.screen.blit(self.background_image, (0, 0))
         self.all_sprites.draw(self.screen)
+        self.obstacles.draw(self.screen)
         pygame.display.flip()
 
     def watch_for_events(self):
@@ -111,6 +150,7 @@ class Game():
 
     def update(self):
         self.all_sprites.update()
+        self.obstacles.update()
 
 
 def main():
