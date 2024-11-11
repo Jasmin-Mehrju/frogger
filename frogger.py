@@ -8,10 +8,10 @@ class Settings():
     WINDOW = pygame.rect.Rect((0, 0, 800, 800))
     FPS = 60
     DELTATIME = 1.0 / FPS
-    DIRECTIONS = {"right": pygame.math.Vector2(8, 0), 
-                  "left": pygame.math.Vector2(-8, 0), 
-                  "up": pygame.math.Vector2(0, -8), 
-                  "down": pygame.math.Vector2(0, 8)}
+    DIRECTIONS = {"right": pygame.math.Vector2(5, 0), 
+                  "left": pygame.math.Vector2(-5, 0), 
+                  "up": pygame.math.Vector2(0, -5), 
+                  "down": pygame.math.Vector2(0, 5)}
     TITLE = "Frogger"
     FILE_PATH = os.path.dirname(os.path.abspath(__file__))
     IMAGE_PATH = os.path.join(FILE_PATH, "images")
@@ -50,6 +50,7 @@ class Frog(Object):
                 self.pos.x = 0
             elif self.pos.x + self.rect.width > Settings.WINDOW.width:
                 self.pos.x = Settings.WINDOW.width - self.rect.width
+
             if self.pos.y < 0:
                 self.pos.y = 0
             elif self.pos.y + self.rect.height > Settings.WINDOW.height:
@@ -91,22 +92,22 @@ class Game():
         self.all_sprites = pygame.sprite.Group(self.frog)
 
         self.obstacles = pygame.sprite.Group()
-        self.car1 = Obstacle("car1.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 150), speedx=2, speedy=0)
+        self.car1 = Obstacle("car1.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 200), speedx=2, speedy=0)
         self.obstacles.add(self.car1)
 
-        self.car2 = Obstacle("car2.png", (100, 60), (Settings.WINDOW.width - 680, Settings.WINDOW.height - 150), speedx=2, speedy=0)
+        self.car2 = Obstacle("car2.png", (100, 60), (Settings.WINDOW.width - 680, Settings.WINDOW.height - 200), speedx=2, speedy=0)
         self.obstacles.add(self.car2)
 
-        self.car3 = Obstacle("car3.png", (100, 60), (Settings.WINDOW.width - 880, Settings.WINDOW.height - 150), speedx=2, speedy=0)
+        self.car3 = Obstacle("car3.png", (100, 60), (Settings.WINDOW.width - 880, Settings.WINDOW.height - 200), speedx=2, speedy=0)
         self.obstacles.add(self.car3)
 
-        self.car1L = Obstacle("car1L.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 200), speedx=-3, speedy=0)
+        self.car1L = Obstacle("car1L.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 250), speedx=-3, speedy=0)
         self.obstacles.add(self.car1L)
 
-        self.car2L = Obstacle("car2L.png", (100, 60), (Settings.WINDOW.width - 800, Settings.WINDOW.height - 200), speedx=-3, speedy=0)
+        self.car2L = Obstacle("car2L.png", (100, 60), (Settings.WINDOW.width - 800, Settings.WINDOW.height - 250), speedx=-3, speedy=0)
         self.obstacles.add(self.car2L)
 
-        self.car3L = Obstacle("car3L.png", (100, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 200), speedx=-3, speedy=0)
+        self.car3L = Obstacle("car3L.png", (100, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 250), speedx=-3, speedy=0)
         self.obstacles.add(self.car3L)
         
 
