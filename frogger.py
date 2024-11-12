@@ -26,8 +26,9 @@ class Object(pygame.sprite.Sprite):
         self.setImage()
 
     def setImage(self):
-        self.image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, self.image_file)).convert_alpha()
+        self.image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, self.image_file)).convert()
         self.image = pygame.transform.scale(self.image, self.size)
+        self.image.set_colorkey((0,0,0))
         self.rect: pygame.rect.Rect = self.image.get_rect()
         self.rect.topleft = self.pos
 
@@ -127,6 +128,8 @@ class Game():
 
     def draw(self):
         self.screen.blit(self.background_image, (0, 0))
+        pygame.draw.rect(self.screen, (25, 147, 41),(0, 0, Settings.WINDOW.width, 60))
+        pygame.draw.rect(self.screen, (25, 147, 41),(0, Settings.WINDOW.height - 60, Settings.WINDOW.width, 60))
         self.all_sprites.draw(self.screen)
         self.obstacles.draw(self.screen)
         pygame.display.flip()
