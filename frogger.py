@@ -120,6 +120,9 @@ class Game():
         self.log1 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 450), speedx= 4, speedy=0)
         self.obstacles.add(self.log1)
 
+        self.log2 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 450), speedx= 4, speedy=0)
+        self.obstacles.add(self.log2)
+
 
         self.background_image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, "bg.png")).convert()
         self.background_image = pygame.transform.scale(self.background_image, Settings.WINDOW.size)
