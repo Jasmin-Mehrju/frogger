@@ -60,7 +60,7 @@ class Frog(Object):
 
 
 class Obstacle(pygame.sprite.Sprite):
-    def __init__(self, image_file, size, pos, speedx, speedy):
+    def __init__(self, image_file, size, pos, speedx, speedy, is_log = False):
         super().__init__()
         self.image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, image_file)).convert_alpha()
         self.image = pygame.transform.scale(self.image, size)
@@ -68,6 +68,7 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect.topleft = pos
         self.speedx = speedx
         self.speedy = speedy
+        self.is_log = is_log
 
     def update(self):
         self.rect.x += self.speedx
@@ -101,15 +102,24 @@ class Game():
         self.car3 = Obstacle("car3.png", (100, 60), (Settings.WINDOW.width - 880, Settings.WINDOW.height - 200), speedx=2, speedy=0)
         self.obstacles.add(self.car3)
 
-        self.car1L = Obstacle("car1L.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 260), speedx=-3, speedy=0)
+        self.car1L = Obstacle("car1L.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 250), speedx=-3, speedy=0)
         self.obstacles.add(self.car1L)
 
-        self.car2L = Obstacle("car2L.png", (100, 60), (Settings.WINDOW.width - 800, Settings.WINDOW.height - 260), speedx=-3, speedy=0)
+        self.car2L = Obstacle("car2L.png", (100, 60), (Settings.WINDOW.width - 800, Settings.WINDOW.height - 250), speedx=-3, speedy=0)
         self.obstacles.add(self.car2L)
 
-        self.car3L = Obstacle("car3L.png", (100, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 260), speedx=-3, speedy=0)
+        self.car3L = Obstacle("car3L.png", (100, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 250), speedx=-3, speedy=0)
         self.obstacles.add(self.car3L)
-        
+
+        self.truck1 = Obstacle("truck1.png", (150, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 350), speedx= 4.5, speedy=0)
+        self.obstacles.add(self.truck1)
+
+        self.truck2 = Obstacle("truck2.png", (150, 60), (Settings.WINDOW.width - 450, Settings.WINDOW.height - 350), speedx= 4.5, speedy=0)
+        self.obstacles.add(self.truck2)
+
+        self.log1 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 450), speedx= 4, speedy=0)
+        self.obstacles.add(self.log1)
+
 
         self.background_image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, "bg.png")).convert()
         self.background_image = pygame.transform.scale(self.background_image, Settings.WINDOW.size)
@@ -128,9 +138,11 @@ class Game():
     def draw(self):
         self.screen.blit(self.background_image, (0, 0))
         pygame.draw.rect(self.screen, (25, 147, 41),(0, 0, Settings.WINDOW.width, 60))
-        pygame.draw.rect(self.screen, (25, 147, 41),(0, Settings.WINDOW.height - 60, Settings.WINDOW.width, 60))
+        pygame.draw.rect(self.screen, (25, 147, 41),(0, Settings.WINDOW.height - 90, Settings.WINDOW.width, 90))
         pygame.draw.rect(self.screen, (255, 255, 255),(0, Settings.WINDOW.height - 180, Settings.WINDOW.width, 10))
-        pygame.draw.rect(self.screen, (255, 255, 255),(0, Settings.WINDOW.height - 240, Settings.WINDOW.width, 10))
+        pygame.draw.rect(self.screen, (255, 255, 255),(0, Settings.WINDOW.height - 220, Settings.WINDOW.width, 10))
+        pygame.draw.rect(self.screen, (25, 147, 41),(0, Settings.WINDOW.height - 390, Settings.WINDOW.width, 40))
+
 
 
         self.all_sprites.draw(self.screen)
@@ -174,10 +186,17 @@ class Game():
         collisions = pygame.sprite.groupcollide(self.all_sprites, self.obstacles, False, False)
         for sprite, obstacles in collisions.items():
             if isinstance(sprite, Frog):
-                sprite.pos = pygame.math.Vector2(Settings.start_pos)
-                sprite.rect.topleft = sprite.pos
+                for obstacle in obstacles:
+                    if not obstacle.is_log:
+                        sprite.pos = pygame.math.Vector2(Settings.start_pos)
+                        sprite.rect.topleft = sprite.pos
 
-        self.all_sprites.update()
+        log_collisions = pygame.sprite.spritecollide(self.frog, self.obstacles, False)
+        for log in log_collisions:
+            if log.is_log:
+                self.frog.pos.x += log.speedx
+                self.frog.rect.topleft = self.frog.pos
+                
 
 
 def main():
