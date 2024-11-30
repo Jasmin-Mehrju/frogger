@@ -117,11 +117,59 @@ class Game():
         self.truck2 = Obstacle("truck2.png", (150, 60), (Settings.WINDOW.width - 450, Settings.WINDOW.height - 350), speedx= 4.5, speedy=0)
         self.obstacles.add(self.truck2)
 
-        self.log1 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 450), speedx= 4, speedy=0)
+        self.log1 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 450), speedx= 2, speedy=0, is_log=True)
         self.obstacles.add(self.log1)
 
-        self.log2 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 450), speedx= 4, speedy=0)
+        self.log2 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 1400, Settings.WINDOW.height - 450), speedx= 2, speedy=0, is_log=True)
         self.obstacles.add(self.log2)
+
+        self.log3 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 500), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log3)
+
+        self.log4 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 750, Settings.WINDOW.height - 500), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log4)
+
+        self.log5 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 500), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log5)
+
+        self.log6 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 550), speedx= 4, speedy=0, is_log=True)
+        self.obstacles.add(self.log6)
+
+        self.log7 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 1400, Settings.WINDOW.height - 550), speedx= 4, speedy=0, is_log=True)
+        self.obstacles.add(self.log7)
+
+        self.log8 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 500), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log8)
+
+        self.log9 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 750, Settings.WINDOW.height - 500), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log9)
+
+        self.log10 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 500), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log10)
+
+        self.log11 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 500, Settings.WINDOW.height - 600), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log11)
+
+        self.log12 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 600), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log12)
+
+        self.log13 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 500, Settings.WINDOW.height - 650), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log13)
+
+        self.log14 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 700, Settings.WINDOW.height - 650), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log14)
+
+        self.log15 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 650), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log15)
+
+        self.log16 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 700), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log16)
+
+        self.log17 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 500, Settings.WINDOW.height - 700), speedx= 3, speedy=0, is_log=True)
+        self.obstacles.add(self.log17)
+
+
+
 
 
         self.background_image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, "bg.png")).convert()
@@ -147,9 +195,8 @@ class Game():
         pygame.draw.rect(self.screen, (25, 147, 41),(0, Settings.WINDOW.height - 390, Settings.WINDOW.width, 40))
 
 
-
-        self.all_sprites.draw(self.screen)
         self.obstacles.draw(self.screen)
+        self.all_sprites.draw(self.screen)
         pygame.display.flip()
 
     def watch_for_events(self):
@@ -188,17 +235,24 @@ class Game():
 
         collisions = pygame.sprite.groupcollide(self.all_sprites, self.obstacles, False, False)
         for sprite, obstacles in collisions.items():
-            if isinstance(sprite, Frog):
                 for obstacle in obstacles:
                     if not obstacle.is_log:
                         sprite.pos = pygame.math.Vector2(Settings.start_pos)
                         sprite.rect.topleft = sprite.pos
 
         log_collisions = pygame.sprite.spritecollide(self.frog, self.obstacles, False)
+        on_log = False
         for log in log_collisions:
             if log.is_log:
                 self.frog.pos.x += log.speedx
                 self.frog.rect.topleft = self.frog.pos
+                on_log = True
+
+        river_top = Settings.WINDOW.height - 450
+        river_bottom = Settings.WINDOW.height - 390
+        if not on_log and river_top < self.frog.rect.top < river_bottom:
+            self.frog.pos = pygame.math.Vector2(Settings.start_pos)
+            self.frog.rect.topleft = self.frog.pos
                 
 
 
