@@ -1,6 +1,5 @@
 import os
 from typing import Any
-
 import pygame
 
 
@@ -16,6 +15,7 @@ class Settings():
     FILE_PATH = os.path.dirname(os.path.abspath(__file__))
     IMAGE_PATH = os.path.join(FILE_PATH, "images")
     start_pos = pygame.math.Vector2(WINDOW.width // 2, WINDOW.height - 40)
+
 
 class Object(pygame.sprite.Sprite):
     def __init__(self, image_file, size, pos):
@@ -79,7 +79,6 @@ class Obstacle(pygame.sprite.Sprite):
             self.rect.right = 0
 
 
-
 class Game():
     def __init__(self):
         os.environ["SDL_VIDEO_WINDOW_POS"] = "10, 50"
@@ -99,7 +98,6 @@ class Game():
         self.ziel_rect_center = self.ziel_image.get_rect(center=(Settings.WINDOW.width // 2, 50))
         self.ziel_rect_right = self.ziel_image.get_rect(center=(Settings.WINDOW.width - 50, 50))
     
-
         #autos
         self.obstacles = pygame.sprite.Group()
         self.car1 = Obstacle("car1.png", (100, 60), (Settings.WINDOW.width // 2, Settings.WINDOW.height - 200), speedx=2, speedy=0)
@@ -136,9 +134,6 @@ class Game():
 
         self.log25 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 900, Settings.WINDOW.height - 450), speedx= 2, speedy=0, is_log=True)
         self.obstacles.add(self.log25)
-
-        # self.log3 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 600, Settings.WINDOW.height - 500), speedx= 3, speedy=0, is_log=True)
-        # self.obstacles.add(self.log3)
 
         self.log4 = Obstacle("log2.png", (150, 60), (Settings.WINDOW.width - 350, Settings.WINDOW.height - 500), speedx= 3, speedy=0, is_log=True)
         self.obstacles.add(self.log4)
@@ -197,7 +192,6 @@ class Game():
         self.log172 = Obstacle("log1.png", (250, 60), (Settings.WINDOW.width - 300, Settings.WINDOW.height - 700), speedx= -1, speedy=0, is_log=True)
         self.obstacles.add(self.log172)
 
-
         self.background_image = pygame.image.load(os.path.join(Settings.IMAGE_PATH, "bg.png")).convert()
         self.background_image = pygame.transform.scale(self.background_image, Settings.WINDOW.size)
 
@@ -230,8 +224,6 @@ class Game():
         pygame.draw.rect(self.screen, (255, 255, 255),(0, Settings.WINDOW.height - 180, Settings.WINDOW.width, 10))
         pygame.draw.rect(self.screen, (255, 255, 255),(0, Settings.WINDOW.height - 220, Settings.WINDOW.width, 10))
         pygame.draw.rect(self.screen, (255, 255, 255),(0, Settings.WINDOW.height - 320, Settings.WINDOW.width, 10))
-
-     
 
         self.obstacles.draw(self.screen)
         self.all_sprites.draw(self.screen)
