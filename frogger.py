@@ -72,6 +72,7 @@ class Obstacle(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
+                
         if self.rect.right < 0:
             self.rect.left = Settings.WINDOW.width
         elif self.rect.left > Settings.WINDOW.width:
@@ -272,9 +273,6 @@ class Game():
     def update(self):
         self.all_sprites.update()
         self.obstacles.update()
-
-        if self.frog.rect.colliderect(self.ziel_rect_left) or self.frog.rect.colliderect(self.ziel_rect_center) or self.frog.rect.colliderect(self.ziel_rect_right):
-            self.restart_round()
 
         collisions = pygame.sprite.groupcollide(self.all_sprites, self.obstacles, False, False)
         for sprite, obstacles in collisions.items():
