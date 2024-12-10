@@ -39,22 +39,48 @@ class Frog(Object):
     def __init__(self, image_file, size, pos):
         super().__init__(image_file, size, pos)
         self.pos = pygame.math.Vector2(pos)
-        self.speed = 1
+        self.block_size = 50
         self.direction = None
 
-    def update(self):
+    def move(self):
         if self.direction:
-            if self.pos.x < 0:
-                self.pos.x = 0
-            elif self.pos.x + self.rect.width > Settings.WINDOW.width:
-                self.pos.x = Settings.WINDOW.width - self.rect.width
+            if self.direction == "left":
+                self.pos.x -= self.block_size
+            elif self.direction == "right":
+                self.pos.x += self.block_size
+            elif self.direction == "up":
+                self.pos.y -= self.block_size
+            elif self.direction == "down":
+                self.pos.y += self.block_size
 
-            if self.pos.y < 0:
-                self.pos.y = 0
-            elif self.pos.y + self.rect.height > Settings.WINDOW.height:
-                self.pos.y = Settings.WINDOW.height - self.rect.height
+            # Begrenzungen des Spielfelds
+            if self.rect.left < 0:
+                self.rect.left = 0
+            elif self.rect.right > Settings.WINDOW.width:
+                self.rect.right = Settings.WINDOW.width
 
+            if self.rect.top < 0:
+                self.rect.top = 0
+            elif self.rect.bottom > Settings.WINDOW.height:
+                self.rect.bottom = Settings.WINDOW.height
+            
             self.rect.topleft = self.pos
+            self.direction = None
+
+    def update(self):
+        self.move()
+        # if self.direction:
+        #     if self.pos.x < 0:
+        #         self.pos.x = 0
+        #     elif self.pos.x + self.rect.width > Settings.WINDOW.width:
+        #         self.pos.x = Settings.WINDOW.width - self.rect.width
+
+        #     if self.pos.y < 0:
+        #         self.pos.y = 0
+        #     elif self.pos.y + self.rect.height > Settings.WINDOW.height:
+        #         self.pos.y = Settings.WINDOW.height - self.rect.height
+
+        #     self.rect.topleft = self.pos
         self.setImage()
 
 
@@ -70,8 +96,9 @@ class Obstacle(pygame.sprite.Sprite):
         self.is_log = is_log
 
     def update(self):
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+        self.rect.move_ip(self.speedx, self.speedy)
+        # self.rect.x += self.speedx
+        # self.rect.y += self.speedy
                 
         if self.rect.right < 0:
             self.rect.left = Settings.WINDOW.width
@@ -243,20 +270,21 @@ class Game():
                 elif event.key == pygame.K_LEFT:
                     self.frog.image_file = "frog_left.png"
                     self.frog.direction = "left"
-                    self.frog.pos.x -= 50
+                    #self.frog.pos.x -= self.frog.speed
                 elif event.key == pygame.K_RIGHT:
                     self.frog.image_file = "frog_right.png"
                     self.frog.direction = "right"
-                    self.frog.pos.x += 50
+                    #self.frog.pos.x += self.frog.speed
                 elif event.key == pygame.K_UP:
                     self.frog.image_file = "frog_up.png"
                     self.frog.direction = "up"
-                    self.frog.pos.y -= 50
+                    #self.frog.pos.y -= self.frog.speed
                 elif event.key == pygame.K_DOWN:
                     self.frog.image_file = "frog_down.png"
                     self.frog.direction = "down"
-                    self.frog.pos.y += 50
+                    #self.frog.pos.y += self.frog.speed
                 self.frog.setImage()
+                self.frog.move()
 
             elif event.type == pygame.KEYUP:
                 self.frog.direction = None
